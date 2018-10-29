@@ -1,4 +1,4 @@
-from random import randint
+from random import randint,choice
 import sys
 
 """
@@ -6,6 +6,7 @@ python name_generator.py [name_count] [name_format] [output file name](optional)
 Generates a list of "name_count" names in the format "name_format"
 """
 
+standard_formats = ["f l","fi l","f m l","f mi l","l, f","l, fi","l, f mi","l, fi mi"]#the built in formats
 
 def read_into_list(file):
 	arr = []
@@ -39,7 +40,7 @@ l, fi mi = Lastname, F M
 """
 def generate_names(num,name_format):
 	name_list = []
-	formats = ["f l","fi l","f m l","f mi l","l, f","l, fi","l, f mi","l, fi mi"]
+	formats = standard_formats
 	is_mix = True if name_format == "mix" else False
 	for i in range(num):
 		if is_mix:
@@ -77,7 +78,12 @@ def generate_name(type):
 		return last_names[randint(0,len(last_names)-1)]
 
 
+"""
+Converts name from informat to outformat
+"""
 def convert_name(inname,informat,outformat):
+	if(outformat == "mix"):
+		outformat = choice(standard_formats)
 	informat = informat.split()
 	outformat = outformat.split()
 	for c in informat+outformat:
