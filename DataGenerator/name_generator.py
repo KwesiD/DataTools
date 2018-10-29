@@ -71,11 +71,11 @@ def generate_names(num,name_format):
 
 def generate_name(type):
 	if(type == "first"):
-		return first_names[randint(0,len(first_names)-1)]
+		return first_names[randint(0,len(first_names)-1)].capitalize()
 	if(type == "middle"):
-		return middle_names[randint(0,len(middle_names)-1)]	
+		return middle_names[randint(0,len(middle_names)-1)].capitalize()
 	if(type == "last"):
-		return last_names[randint(0,len(last_names)-1)]
+		return last_names[randint(0,len(last_names)-1)].capitalize()
 
 
 """
