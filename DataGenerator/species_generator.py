@@ -2,7 +2,6 @@ import sys
 import string
 from random import randint,choice
 from nltk import edit_distance
-import numpy as np
 """
 Generates a list of random species with optional noise
 """

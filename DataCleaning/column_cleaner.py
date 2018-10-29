@@ -9,7 +9,7 @@ import pandas as pd
 sys.path.append('../DataGenerator')
 import name_generator
 import species_generator
-sys.argv = ["","../DataGenerator/sample_patients.xlsx","-p","Pathogen"]
+sys.argv = ["","../DataGenerator/sample_patients.xlsx","./mod_patients.xlsx","-p","Pathogen"]
 
 
 # In[ ]:
@@ -26,6 +26,7 @@ def clean_pathogens(column):
         temp = column.loc[i]
         column.loc[i] = search_species(column.loc[i]) #local search species
         print(temp,"->",column.loc[i])
+    return column
         
         
     
@@ -38,10 +39,13 @@ def clean_pathogens(column):
 modes = []
 columns = []
 for i in range(len(sys.argv)):
-    if(i == 0):
+    if(i == 0): #skip program name
         continue
-    if(i == 1):
+    if(i == 1): #get infile name
         datafile = sys.argv[i]
+        continue
+    if(i == 2): #get outfile name
+        outfile = sys.argv[i]
         continue
     if(sys.argv[i] in ["-p","-pathogen"] and sys.argv[i+1]):
         modes.append("pathogen")
@@ -60,20 +64,17 @@ if(fileformat == "csv"):
 elif(fileformat in ["xls","xlsx"]):
     df = pd.read_excel(datafile)
 
-print(datafile)
 for mode,column in zip(modes,columns):
     if(mode == "pathogen"):
         df[column] = clean_pathogens(df[column])
     if(mode == "name"):
         df[column] = clean_names(df[column])
 
-    
-        
-        
 
-
-# In[ ]:
-
-
-
-
+newfileformat = outfile.split(".")[-1]
+if(newfileformat == "csv"):
+    df.to_csv(outfile)
+elif(newfileformat in ["xls","xlsx"]):
+    writer = pd.ExcelWriter(outfile)
+    df.to_excel(writer,"Sheet1")
+    writer.save()
