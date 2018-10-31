@@ -4,7 +4,7 @@ sys.path.append('../DataGenerator')
 import name_generator
 import species_generator
 import re
-
+import math
 #sys.argv = ["","../DataGenerator/sample_patients.xlsx","./mod_patients.xlsx","-n","IPCStaff","-p","Pathogen"]
 """
 args should be in this format
@@ -47,13 +47,15 @@ def clean_names(column):
     [a-zA-Z]+[.]? ([a-zA-Z]+[. ]?)+ ?, ?(?:[a-zA-Z]+[.]? ?)+ 
 """
 def find_names(names):
+    if((type(names) != type("")) and math.isnan(names)):
+        return []
     names = names.strip() 
     name_list = []
     regex_list = [
-        r"^[a-zA-Z]+[.]? (?:[a-zA-Z]+[. ]?)+ ?(?:, ?(?:[a-zA-Z]+[.]? ?)+)+",
-        r"^([a-zA-Z]+[.]? ?, ?(?:[a-zA-Z]+[.]? ?)){2,}",
-        r"[a-zA-Z]+[.]? ?, ?(?:[a-zA-Z]+[.]? ?)+",
-        r"[a-zA-Z]+[.]? (?:(?:[a-zA-Z]+[.]? )+)?[a-zA-Z]+[.]?"
+        r"^[a-zA-Z-]+[.]? (?:[a-zA-Z-]+[. ]?)+ ?(?:, ?(?:[a-zA-Z-]+[.]? ?)+)+",
+        r"^([a-zA-Z-]+[.]? ?, ?(?:[a-zA-Z-]+[.]? ?)){2,}",
+        r"[a-zA-Z-]+[.]? ?, ?(?:[a-zA-Z-]+[.]? ?)+",
+        r"[a-zA-Z-]+[.]? (?:(?:[a-zA-Z-]+[.]? )+)?[a-zA-Z-]+[.]?"
         ]
     for line in names.split("\n"):
         for i in range(len(regex_list)):
@@ -77,6 +79,8 @@ def find_names(names):
 
 
 def search_species(string):
+    if((type(string) != type("")) and math.isnan(string)):
+        return ""
     newString = []
     for species in re.findall(r"[a-zA-Z]+. ?[a-zA-Z]+",string):
         newString.append(species_generator.search_species(species,True))
