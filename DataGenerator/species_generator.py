@@ -34,9 +34,9 @@ def get_short_name(species):
 Places species in the correct format (Genus species, not Genus Species or genus species)
 """
 def correct_format(species):
-	if(any(s in species for s in ["MRSA","MSSA"])):
+	if(any(s in species for s in ["MRSA","MSSA","mrsa","mssa"])):
 		species = "Staphylococcus aureus"
-	if(any(s in species for s in ["Cdif","Cdiff","C.dif","C.diff","C dif","C diff","C. dif","C. diff"])):
+	if(any(s in species.lower() for s in ["cdif","cdiff","c.dif","c.diff","c dif","c diff","c. dif","c. diff"])):
 		species = "Clostridium difficile"
 	if(species == None or species.strip() == ""):
 		return ""
