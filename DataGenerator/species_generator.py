@@ -34,6 +34,12 @@ def get_short_name(species):
 Places species in the correct format (Genus species, not Genus Species or genus species)
 """
 def correct_format(species):
+	if(any(s in species for s in ["MRSA","MSSA"])):
+		species = "Staphylococcus aureus"
+	if(any(s in species for s in ["Cdif","Cdiff","C.dif","C.diff","C dif","C diff","C. dif","C. diff"])):
+		species = "Clostridium difficile"
+	if(species == None or species.strip() == ""):
+		return ""
 	t1,t2 = species.split()
 	t1 = t1.capitalize()
 	t2 = t2.lower()
@@ -42,14 +48,29 @@ def correct_format(species):
 	return t1 + " " + t2
 
 
-def search_species(term):
-	term = correct_format(term)
+def search_species(term,fullName=False):
+	temp = term
+	try:
+		term = correct_format(term)
+	except ValueError:
+		print("-"*5,"Error in",temp,"-"*5)
+		return ""
+	# if(term == None):
+	# 	print("-"*5,"Error in",temp,"-"*5)
+	# 	return ""
 	if(term in species_list):
+		if("." in term and fullName):
+			term = convert_format(term)
 		return term
 	elif(term in species_short_names):
+		if("." in term and fullName):
+			term = convert_format(term)
 		return term
 	else:
-		return search_by_distance(term)
+		term = search_by_distance(term)
+		if("." in term and fullName):
+			term = convert_format(term)
+		return term
 
 def search_by_distance(term):
 	curr_genus = None

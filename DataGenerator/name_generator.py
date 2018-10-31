@@ -183,7 +183,7 @@ def detect_format(string):
         tokens[i] = tokens[i].strip()
     if("," in tokens[0]):
         name_format.append("l,")
-        if(len(tokens[1]) == 1 or (len(tokens[1]) == 2 and "." in tokens[1])): #initial or initial with period
+        if(len(tokens) > 1 and (len(tokens[1]) == 1 or (len(tokens[1]) == 2 and "." in tokens[1]))): #initial or initial with period
             name_format.append("fi")
         else:
             name_format.append("fi")

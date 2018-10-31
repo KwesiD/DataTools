@@ -14,4 +14,5 @@ output_table = open("../DataFiles/species_list.csv","w")
 output_table.write("Genus,Species\n") #column headers
 for species in species_list:
 	output_table.write(species + "\n")
+output_table.write("Clostridium,difficile\n") #why this is not in the list? I have no idea
 output_table.close()

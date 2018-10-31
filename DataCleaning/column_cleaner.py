@@ -33,19 +33,53 @@ def clean_names(column):
     print("names complete")
     return column
 
+"""
+    The first regex string matches names such as 
+    Lacy Styx, Shanon Pope.
+    Second matches names such as Douglas, Chris Mort, Francis.
+    If there is a match, then we add a new delmiter to replace the comma (Lacy Styx;Shanon Pope) or the space
+    (Douglas, Chris;Mort, Francis).
+    Third regex matches to names in the Last, First M format.
+    Fourth matches to all else.
+    There is some overlap between the 3rd and 4th regex, so entries are deleted onces found. Comma containing 
+    names are processed first.    
+
+    [a-zA-Z]+[.]? ([a-zA-Z]+[. ]?)+ ?, ?(?:[a-zA-Z]+[.]? ?)+ 
+"""
 def find_names(names):
-    names1 = re.findall(r"[a-zA-Z]+[.]?, ?(?:[a-zA-Z]+[.]? ?)+",names)
-    for name in names1:
-        names = names.replace(name,"")
-    names2 = re.findall(r"[a-zA-Z]+[.]? (?:(?:[a-zA-Z]+[.]? )+)?[a-zA-Z]+[.]?",names)
-    name_list = names1+names2
+    names = names.strip() 
+    name_list = []
+    regex_list = [
+        r"^[a-zA-Z]+[.]? (?:[a-zA-Z]+[. ]?)+ ?(?:, ?(?:[a-zA-Z]+[.]? ?)+)+",
+        r"^([a-zA-Z]+[.]? ?, ?(?:[a-zA-Z]+[.]? ?)){2,}",
+        r"[a-zA-Z]+[.]? ?, ?(?:[a-zA-Z]+[.]? ?)+",
+        r"[a-zA-Z]+[.]? (?:(?:[a-zA-Z]+[.]? )+)?[a-zA-Z]+[.]?"
+        ]
+    for line in names.split("\n"):
+        for i in range(len(regex_list)):
+            found_names = re.findall(regex_list[i],names)
+            if(i == 0): #names in the format similar to Lacy Styx, Shanon Pope, Amy Seals, Marty Dave, Alex Stone
+                for name in found_names:
+                    names = names.replace(name,name.replace(",",";")) #replace commas with semicolons for this text
+            elif(i == 1): #names in the format similar to Douglas, Chris Mort, Francis Cost, Allen > (Chris Douglas, Francis Mort, Allen Cost)
+                for name in found_names:
+                    names = names.replace(name,name.replace(", ",",",).replace(" ",";")) #replace comma with space to comma with no space. Then replaces space delimiter with ;
+            else:
+                for name in found_names:
+                    names = names.replace(name,"")
+                name_list += found_names
+    # names1 = re.findall(r"[a-zA-Z]+[.]? ?, ?(?:[a-zA-Z]+[.]? ?)+",names)
+    # for name in names1:
+    #     names = names.replace(name,"")
+    # names2 = re.findall(r"[a-zA-Z]+[.]? (?:(?:[a-zA-Z]+[.]? )+)?[a-zA-Z]+[.]?",names)
+    # name_list = names1+names2
     return name_list
 
 
 def search_species(string):
     newString = []
     for species in re.findall(r"[a-zA-Z]+. ?[a-zA-Z]+",string):
-        newString.append(species_generator.search_species(species))
+        newString.append(species_generator.search_species(species,True))
     return ";".join(newString)
       
 def clean_pathogens(column):
@@ -98,8 +132,8 @@ for mode,column in zip(modes,columns):
 
 newfileformat = outfile.split(".")[-1]
 if(newfileformat == "csv"):
-    df.to_csv(outfile)
+    df.to_csv(outfile,index=False)
 elif(newfileformat in ["xls","xlsx"]):
     writer = pd.ExcelWriter(outfile)
-    df.to_excel(writer,"Sheet1")
+    df.to_excel(writer,"Sheet1",index=False)
     writer.save()
