@@ -1,0 +1,48 @@
+# df = pd.read_excel("clabsi.xlsx")[["CHG_bathing_done","BathedPerProtocol_"]]
+# df = df.replace(np.NaN,'N/A')
+
+# links = {"Patients":{}}
+# for i,row in df.iterrows():
+#     a,b = (row["CHG_bathing_done"],row["BathedPerProtocol_"])
+#     if(a == "N/A" or b == "N/A"):
+#         continue
+#     if(a == "YES"):
+#         a = "Bathed"
+#     else:
+#         a = "Not Bathed"
+        
+#     if(b == "YES"):
+#         b = "Bathed Per Protocol"
+#     else:
+#         b = "Not Bathed Per Protocol"
+#     if(a in links["Patients"]):
+#         links["Patients"][a] += 1
+#     else:
+#         links["Patients"][a] = 1
+# #     if(b in links["Patients"]):
+# #         links["Patients"][b] += 1
+# #     else:
+# #         links["Patients"][b] = 1
+#     if(a in links):
+#         if(b in links[a]):
+#             links[a][b] += 1
+#         else:
+#             links[a][b] = 1
+#     else:
+#         links[a] = {b:1}
+# #     if(b in links):
+# #         links[b] += 1
+# #     else:
+# #         links[b] = 1
+# #     link = {"source":"Patients","target":a,"value":1}
+# #     links.append(link)
+# #     link = {"source":a,"target":b,"value":1}
+# #     links.append(link)
+
+# graph_links = []
+# for i in links:
+#     for j in links[i]:
+#         link = {'source': i, 'target': j,'value': links[i][j]}
+#         graph_links.append(link)
+        
+# #print(graph_links)
