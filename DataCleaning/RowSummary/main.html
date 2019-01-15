@@ -1,0 +1,47 @@
+Load Input Sheet:<br>
+<input type="file" name="load_sheet_button" accept=".xls,.xlsx"></input>
+<br>
+Load Output Sheet:<br>
+<input type="file" name="load_output_sheet_button" accept=".xls,.xlsx"></input>
+<br><br>
+<button name="save">Save</button>
+
+<div name = "text_div" style="text-align: center;">
+	<h3 name="col_name" style="text-align: center;"></h2>
+	</div> Row: <input type="number" name="rowNum" style="display: inline-block; text-align: center;"></input> 	Col: <input type="number" name="colNum" style="display: inline-block; text-align: center;"></div>
+	<button name="go">Go</button>
+</div>
+
+
+<div name="text_div">
+	<textarea rows="10" cols="50" name="original_text"></textarea>
+	<textarea rows="4" cols="50" name="summarized_text"></textarea>
+</div>
+
+<button name=next>Next Entry</button> <button name=prev>Previous Entry</button> 
+
+
+<div>
+
+	<div style="display: inline-block;">
+		<div name="issues">
+			<h3>Issues</h3>
+		</div>
+
+		<div name="issues_menu" class="menu" style="	height: 300px;
+	overflow: scroll;"></div>
+	</div>
+
+	<div style="display: inline-block;">
+		<div name="actions">
+			<h3>Actions</h3>
+		</div>
+		<div name="actions_menu" class="menu" style="	height: 300px;
+	overflow: scroll;"></div>
+	</div>
+
+</div>
+
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <script lang="javascript" src="xlsx/dist/xlsx.full.min.js"></script>
+  <script type="text/javascript" src="main.js"></script>
